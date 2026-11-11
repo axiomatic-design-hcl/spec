@@ -76,6 +76,8 @@ Do not encode an interaction-only argument as several individual effects.
 For each applicable exact record, evaluate all `holds_if` premises.
 An invalidated premise disables its claimed effect and leaves an unresolved obligation.
 An assumed or unevaluated premise supports only a conditional effect.
+This condition does not prevent a `basis = "source"` assertion from passing on applicable authored effects.
+Such a result does not validate its premises or establish a supported conclusion.
 A validated premise still requires applicable support for a supported conclusion.
 DP premises qualify all control claims that depend on that DP.
 
@@ -179,7 +181,7 @@ Use the following basis rules:
 
 | Basis | Required result |
 |---|---|
-| `source` | The applicable authored effects establish the asserted structure. Proposed control links alone do not supply diagonal effects or missing zeros. |
+| `source` | The applicable authored effects establish the asserted structure. Assumed or unevaluated premises do not fail this basis. Invalidated premises still disable their effects. Proposed control links alone do not supply diagonal effects or missing zeros. |
 | `conditional` | The applicable effects establish the structure with every relied-on premise stated. Assumed or unevaluated premises remain named conditions. |
 | `supported` | The structure and every relied-on effect, premise, and allocation have applicable accepted support. |
 
