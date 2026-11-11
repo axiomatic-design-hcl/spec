@@ -4,7 +4,7 @@ This reference is for authors and tool integrators who describe software with Ax
 It defines the language contracts, authored facts, derived results, and required diagnostics.
 It does not define the runtime behavior of the software that a design describes.
 
-This specification adopts the attachment design from the [extension RFC](rfc-uncoupled-language.md).
+This specification defines the attachment contracts in this reference.
 The planned implementation uses Go and `github.com/hashicorp/hcl/v2`.
 The earlier Python analyzer is available in Git history at commit `9fef41f`.
 It is not a reference implementation or a compatibility constraint.
@@ -37,8 +37,8 @@ An `X!` cell retains its exact material effect and exposes a conflicting ancesto
 An uncoupled matrix is diagonal.
 A decoupled matrix can become triangular through a meaningful order.
 A coupled matrix contains a material cycle between paired controls.
-A known cycle establishes coupling even if other cells remain unknown.
-Without a known cycle, unknown cells can prevent a classification.
+A known cycle remains visible even if other cells remain unknown.
+Unknown cells prevent complete classification, including when a known cycle is present.
 
 Zigzag decomposition defines child FRs inside a chosen parent DP.
 Sibling results do not establish independence across the whole design.
@@ -130,7 +130,7 @@ The recommended layout uses these files:
 | `views.ad.ext.hcl` | Presentation configuration |
 
 Replace `BRANCH` with the label of the branch, for example `design.search.ad.hcl`.
-The example in `examples/library_system/` uses this layout.
+The starter in `examples/starter/` shows an explicit manifest and attachments.
 A small model can stay in one file.
 
 ## Syntax profile and references
@@ -425,7 +425,11 @@ Assertions about uncoupled mappings still require effective controls, justified 
 Each block label is unique within its namespace.
 Labels use snake_case.
 Use `alias` to retain IDs from a source, such as `FR11` or `DP121`.
-The `cites` field refers to a declared `source` block.
+The `cites` field accepts one source reference or a nonempty list of source references.
+
+The [field schema](schema.md) is authoritative for every field's type, cardinality, metadata, namespace, and absence rules.
+All authored fields reject `null`.
+The tables in this reference summarize the schema rather than defining a second decoder contract.
 
 | Block | Fields and meaning |
 |---|---|
@@ -506,7 +510,8 @@ An exact leaf relation remains visible in the master matrix.
 A parent effect describes an aggregate outcome, not every descendant pair.
 A parent material effect therefore creates a refinement obligation rather than automatic leaf effects.
 A parent zero does not establish descendant zeros without a compositional argument.
-Contrary exact effects produce a conflict that names the ancestor claim.
+An apparent disagreement produces an unresolved refinement obligation.
+A contradiction requires an applicable outcome argument that establishes incompatible claims.
 
 The master matrix, dependency matrix, and impact report use the same resolved influence facts.
 The dependency matrix distinguishes known zero from unknown.
@@ -521,9 +526,9 @@ An expected order must contain every relevant DP once and respect every required
 Any valid order passes, even if it differs from the stable display order.
 
 The `basis` field selects `source`, `conditional`, or `supported` assertions.
-Legacy assertions use the source interpretation.
-Source assertions test a reported structural hypothesis, including its proposed pairing.
-Supported assertions require resolved influence evidence.
+An omitted basis selects `source`.
+Every basis requires applicable effects rather than pairings alone.
+The [assessment contract](assessment-contract.md#expectation-results) defines assertion results for unknowns, conflicts, and support gaps.
 
 A `coupling "label"` block records residual coupling.
 Its required fields are `scope`, `affects`, and `reason`.
@@ -625,6 +630,8 @@ The `source` profile preserves gaps in historical reconstructions as warnings.
 It does not turn missing criteria or unnamed modules into invented facts.
 The `architecture` profile requires operational criteria and complete module contracts.
 Both profiles reject malformed structure and contradictory design facts.
+The [diagnostic contract](diagnostics.md) assigns stable rule codes and severity for each profile.
+Support and feasibility can remain unresolved even when a complete architecture model passes validation.
 
 The language defines report content, input selection, and failure semantics independently of command spelling.
 The planned Go tool's executable name, flags, and subcommands are not specified here.
@@ -657,10 +664,14 @@ Usage errors are distinct from assessment failures.
 The earlier Python experiment and its generated HTML are in Git history at commit `9fef41f`.
 They do not define the Go interface or demonstrate conformance with this specification.
 The [design rationale](design-rationale.md) records the conditional architecture and its evidence limits.
-The [dated review](review-2026-10-28.md) records findings about the earlier experiment.
+The [November review](review-2026-11-11.md) records the specification gaps that motivated the detailed contracts.
 
 ## Normative assessment rules
 
 The [assessment contract](assessment-contract.md) defines version 1 snapshot selection, cell resolution, pairing, hierarchy, support, feasibility, statistics, and identity.
 Use these rules for every report and extension composition.
 They replace underspecified assessment behavior in earlier drafts.
+
+The [field schema](schema.md) and [diagnostic contract](diagnostics.md) complete the decoding and failure rules.
+The [versioned conformance cases](../conformance/core-1/README.md) record expected behavior for future implementations.
+Their expected outcomes are not measured validator results.

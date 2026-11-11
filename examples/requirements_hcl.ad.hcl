@@ -609,7 +609,7 @@ scenario "exact_conflict" {
   verifies = [fr.assess_method.criterion.qualified]
   vary = [dp.qualified_analysis]
   description = "Proposed fixture change, not an authored contradiction in this example."
-  steps = ["Add an exact leaf effect that contradicts an ancestor zero.", "Require the exact effect and the parent conflict in master, impact, and DSM views."]
+  steps = ["Add an exact leaf effect beside an ancestor zero.", "Require the exact effect and an unresolved refinement obligation in master, impact, and DSM views.", "Report contradiction only when an applicable outcome argument establishes incompatible claims."]
 }
 
 scenario "invalidate_premise" {
@@ -666,7 +666,7 @@ fr "binding_links" {
   parent = dp.owner_envelopes
   statement = "Distinguish a matching realization from a mismatch or unavailable observation."
   criterion "binding_status" {
-    metric = "Caller-supplied observations produce match, drift, or unknown under the binding contract."
+    metric = "Caller-supplied observations produce match, mismatch, or unknown under the binding contract."
     op = "=="
     value = true
     origin = "proposed"
